@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/seismicHome">
+
+    <fragment
+        android:id="@+id/seismicHome"
+        android:name="com.enshaedn.seismic.SeismicHome"
+        android:label="fragment_seismic_home"
+        tools:layout="@layout/fragment_seismic_home" >
+        <action
+            android:id="@+id/action_seismicHome_to_seismic"
+            app:destination="@id/seismic" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/seismic"
+        android:name="com.enshaedn.seismic.Seismic"
+        android:label="fragment_seismic"
+        tools:layout="@layout/fragment_seismic" />
+</navigation>
