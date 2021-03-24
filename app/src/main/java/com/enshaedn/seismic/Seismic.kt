@@ -11,23 +11,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import java.util.*
 
 class Seismic : Fragment(), SensorEventListener {
     private val TAG = "SEISMIC_LOG"
     private lateinit var sensorManager: SensorManager
     private var mAccel: Sensor? = null
-    val gravity = arrayOf<Float>()
-    val accData = arrayOf<Float>()
+    val gravity = FloatArray(3)
+    val accData = FloatArray(3)
+    private lateinit var stopButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
         Log.d(TAG, "Testing")
-
-//        val sensorList: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
-
         mAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     }
 
@@ -39,6 +38,16 @@ class Seismic : Fragment(), SensorEventListener {
         return inflater.inflate(R.layout.fragment_seismic, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        stopButton = view.findViewById(R.id.stopSession)
+        stopButton.setOnClickListener {
+            Log.d(TAG, "Stop Tracking")
+            sensorManager.unregisterListener(this)
+        }
+
+    }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
         Log.d(TAG, sensor.name)
@@ -46,8 +55,6 @@ class Seismic : Fragment(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-//        Log.d(TAG, event.toString())
-//        val v = event?.values
         val alpha: Float = 0.8f
 
         //isolate gravity with low pass filter
@@ -60,7 +67,7 @@ class Seismic : Fragment(), SensorEventListener {
         accData[2] = event.values[2] - gravity[2]
         val t = event.timestamp
 
-        Log.d(TAG, event.sensor.name + " : " + accData[0].toString() + " : " + accData[1].toString() + " : " + accData[2].toString() + " : " + t)
+        Log.d(TAG, event.sensor.name + " : " + accData[0].toString() + " : " + accData[1].toString() + " : " + accData[2].toString() + " : " + Date(t))
     }
 
     override fun onResume() {
