@@ -43,4 +43,5 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
     apply plugin: "androidx.navigation.safeargs.kotlin"
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
