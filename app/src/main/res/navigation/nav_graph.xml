@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/seismicHome"
-        android:name="com.enshaedn.seismic.SeismicHome"
+        android:name="com.enshaedn.seismic.screens.SeismicHome"
         android:label="fragment_seismic_home"
         tools:layout="@layout/fragment_seismic_home" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/seismic"
-        android:name="com.enshaedn.seismic.Seismic"
+        android:name="com.enshaedn.seismic.screens.Seismic"
         android:label="fragment_seismic"
         tools:layout="@layout/fragment_seismic" />
 </navigation>

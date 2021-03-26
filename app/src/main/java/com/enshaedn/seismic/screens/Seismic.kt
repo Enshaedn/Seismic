@@ -1,4 +1,4 @@
-package com.enshaedn.seismic
+package com.enshaedn.seismic.screens
 
 import android.content.Context
 import android.hardware.Sensor
@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.enshaedn.seismic.R
 import java.util.*
 
 class Seismic : Fragment(), SensorEventListener {
