@@ -52,9 +52,9 @@ class SeismicHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "Seismic Home View Created")
 
-        startButton = view.findViewById<Button>(R.id.startSession)
-        startButton.setOnClickListener {
-            findNavController().navigate(R.id.action_seismicHome_to_seismic)
-        }
+//        startButton = view.findViewById<Button>(R.id.startSession)
+//        startButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_seismicHome_to_seismic)
+//        }
     }
 }

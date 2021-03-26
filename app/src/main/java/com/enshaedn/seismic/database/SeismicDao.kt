@@ -21,7 +21,7 @@ interface SeismicDao {
     suspend fun clearSessions()
 
     @Query("SELECT * FROM session_table ORDER BY sessionID DESC LIMIT 1")
-    suspend fun getLastSession(): Session?
+    suspend fun getCurrentSession(): Session?
 
     @Query("SELECT * FROM session_table ORDER BY sessionID DESC")
     fun getAllSessions(): LiveData<List<Session>>

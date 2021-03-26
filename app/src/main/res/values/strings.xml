@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Seismic</string>
+
     <string name="startSession">Start Session</string>
     <string name="stopSession">Stop Session</string>
+    <string name="clearSessions">Clear Sessions</string>
+
+    <string name="title"><![CDATA[<h3>SESSION DATA</h3>]]></string>
+    <string name="start_time"><![CDATA[<b>Start:</b>]]></string>
+    <string name="end_time"><![CDATA[<b>End:</b>]]></string>
+    <string name="quality"><![CDATA[<b>Quality:</b>]]></string>
+    <string name="hours_slept"><![CDATA[<b>Hours:Minutes:Seconds</b>]]></string>
 </resources>

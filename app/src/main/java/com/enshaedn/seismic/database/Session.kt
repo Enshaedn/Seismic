@@ -19,5 +19,5 @@ data class Session (
     var note: String = "",
 
     @ColumnInfo(name = "session_title")
-    var title: String = ""
+    var title: String = "Session: " + sessionID
 )
