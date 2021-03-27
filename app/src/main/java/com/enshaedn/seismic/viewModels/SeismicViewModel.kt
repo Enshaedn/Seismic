@@ -8,10 +8,7 @@ import android.text.Html
 import android.text.Spanned
 import android.util.Log
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.enshaedn.seismic.R
 import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
@@ -24,6 +21,14 @@ class SeismicViewModel(
     private val TAG = "SEISMIC_LOG"
     private var currentSession = MutableLiveData<Session?>()
     private val sessions = database.getAllSessions()
+
+    private val _navigateToFinalize = MutableLiveData<Session?>()
+    val navigateToFinalize: LiveData<Session?>
+        get() = _navigateToFinalize
+
+    fun doneNavigating() {
+        _navigateToFinalize.value = null
+    }
 
     val sessionsString = Transformations.map(sessions) { sessions ->
         formatSessions(sessions, application.resources)
@@ -52,6 +57,7 @@ class SeismicViewModel(
                     // Seconds
                     append("${it.endTimeMilli.minus(it.startTimeMilli) / 1000}<br><br>")
                 }
+                append(it.note)
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -65,6 +71,18 @@ class SeismicViewModel(
     private fun convertLongToDateString(systemTime: Long): String {
         return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm")
             .format(systemTime).toString()
+    }
+
+    val startButtonVisible = Transformations.map(currentSession) {
+        it == null
+    }
+
+    val stopButtonVisible = Transformations.map(currentSession) {
+        it != null
+    }
+
+    val clearButtonVisible = Transformations.map(sessions) {
+        it?.isNotEmpty()
     }
 
     init {
@@ -102,6 +120,7 @@ class SeismicViewModel(
             val oldSession = currentSession.value ?: return@launch
             oldSession.endTimeMilli = System.currentTimeMillis()
             update(oldSession)
+            _navigateToFinalize.value = oldSession
         }
     }
 

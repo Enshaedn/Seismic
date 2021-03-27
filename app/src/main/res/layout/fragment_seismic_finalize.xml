@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="seismicFinalizeViewModel"
+            type="com.enshaedn.seismic.viewModels.SeismicFinalizeViewModel" />
+        <variable
+            name="sessionTitle"
+            type="String" />
+        <variable
+            name="sessionNote"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.SeismicFinalize">
+
+        <!--    <com.jjoe64.graphview.helper.GraphViewXML-->
+        <!--        android:id="@+id/activeGraph"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="100dip"-->
+        <!--        app:layout_constraintTop_toTopOf="parent"-->
+        <!--        app:layout_constraintRight_toRightOf="parent"-->
+        <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--        app:seriesData="0=5;2=5;3=0;4=2" />-->
+
+        <EditText
+            android:id="@+id/sessionTitleEdit"
+            android:hint="@string/sessionTitle"
+            android:autofillHints="@string/sessionTitle"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <EditText
+            android:id="@+id/sessionNoteEdit"
+            android:hint="@string/sessionNote"
+            android:autofillHints="@string/sessionNote"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/sessionTitleEdit"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/saveSession"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="@string/saveSession"
+            android:onClick="@{() -> seismicFinalizeViewModel.onSaveSessionData(`Placeholder Title`, `Placeholder Note`)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+<!--    android:onClick="@{() -> seismicFinalizeViewModel.onSaveSessionData(sessionTitle, sessionNote)}"-->

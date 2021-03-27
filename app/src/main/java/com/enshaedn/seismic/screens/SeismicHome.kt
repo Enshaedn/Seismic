@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enshaedn.seismic.database.SeismicDB
@@ -41,20 +42,17 @@ class SeismicHome : Fragment() {
 
         val seismicViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicViewModel::class.java)
 
+        seismicViewModel.navigateToFinalize.observe(viewLifecycleOwner, Observer { session ->
+            session?.let {
+                this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSeismicFinalize(session.sessionID))
+                seismicViewModel.doneNavigating()
+            }
+        })
+
         binding.setLifecycleOwner(this)
 
         binding.seismicViewModel = seismicViewModel
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "Seismic Home View Created")
-
-//        startButton = view.findViewById<Button>(R.id.startSession)
-//        startButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_seismicHome_to_seismic)
-//        }
     }
 }

@@ -11,13 +11,20 @@
         android:label="fragment_seismic_home"
         tools:layout="@layout/fragment_seismic_home" >
         <action
-            android:id="@+id/action_seismicHome_to_seismic"
-            app:destination="@id/seismic" />
+            android:id="@+id/action_seismicHome_to_seismicFinalize"
+            app:destination="@id/seismicFinalize" />
     </fragment>
 
     <fragment
-        android:id="@+id/seismic"
-        android:name="com.enshaedn.seismic.screens.Seismic"
+        android:id="@+id/seismicFinalize"
+        android:name="com.enshaedn.seismic.screens.SeismicFinalize"
         android:label="fragment_seismic"
-        tools:layout="@layout/fragment_seismic" />
+        tools:layout="@layout/fragment_seismic_finalize" >
+        <argument
+            android:name="sessionKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_seismicFinalize_to_seismicHome"
+            app:destination="@id/seismicHome" />
+    </fragment>
 </navigation>
