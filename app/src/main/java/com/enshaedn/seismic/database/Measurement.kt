@@ -1,11 +1,13 @@
 package com.enshaedn.seismic.database
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.sql.Timestamp
 
-@Entity(tableName = "measurement_table")
+@Entity(tableName = "measurement_table",
+    foreignKeys = arrayOf(ForeignKey(entity = Session::class,
+        parentColumns = arrayOf("sessionID"),
+        childColumns = arrayOf("sessionID"),
+        onDelete = ForeignKey.CASCADE)))
 data class Measurement(
     @PrimaryKey(autoGenerate = true)
     var measurementID: Long = 0L,
@@ -18,4 +20,13 @@ data class Measurement(
 
     @ColumnInfo(name = "measurement")
     val measurement: Float
+)
+
+data class SessionMeasurements(
+    @Embedded
+    @Relation(
+        parentColumn = "sessionID",
+        entityColumn = "sessionID"
+    )
+    val sessionMeasurements: List<Measurement>
 )
