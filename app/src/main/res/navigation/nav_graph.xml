@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_seismicHome_to_seismicFinalize"
             app:destination="@id/seismicFinalize" />
+        <action
+            android:id="@+id/action_seismicHome_to_sessionsList"
+            app:destination="@id/sessionsList" />
     </fragment>
 
     <fragment
@@ -27,4 +30,8 @@
             android:id="@+id/action_seismicFinalize_to_seismicHome"
             app:destination="@id/seismicHome" />
     </fragment>
+    <fragment
+        android:id="@+id/sessionsList"
+        android:name="com.enshaedn.seismic.screens.SessionsList"
+        android:label="SessionsList" />
 </navigation>

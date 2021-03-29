@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +15,12 @@ import com.enshaedn.seismic.R
 import com.enshaedn.seismic.viewModels.SeismicViewModel
 import com.enshaedn.seismic.viewModels.SeismicViewModelFactory
 import com.enshaedn.seismic.databinding.FragmentSeismicHomeBinding
+import com.jjoe64.graphview.GraphView
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 
 class SeismicHome : Fragment() {
     private val TAG = "SEISMIC_LOG"
-    private lateinit var startButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,24 @@ class SeismicHome : Fragment() {
                 seismicViewModel.doneNavigating()
             }
         })
+
+        seismicViewModel.navigateToSessionsList.observe(viewLifecycleOwner, {
+            if(it == true) {
+                this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSessionsList())
+                seismicViewModel.doneNavigating()
+            }
+        })
+
+//        val graph: GraphView = binding.activeGraph
+//        graph.addSeries(seismicViewModel.graphData)
+
+//        seismicViewModel.cM.observe(viewLifecycleOwner, {
+//            it?.forEach {
+//                it.sessionMeasurements.forEach {
+//                    Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement}")
+//                }
+//            }
+//        })
 
         binding.setLifecycleOwner(this)
 

@@ -14,6 +14,8 @@ import com.enshaedn.seismic.database.Measurement
 import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
 import com.enshaedn.seismic.database.SessionMeasurements
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.concurrent.ThreadLocalRandom
@@ -26,22 +28,51 @@ class SeismicViewModel(
     private val sessions = database.getAllSessions()
     private val measurements = database.getAllMeasurements()
     private var cM = MutableLiveData<List<SessionMeasurements>?>()
+//    lateinit var graphData: LineGraphSeries<DataPoint>
 
     private val _navigateToFinalize = MutableLiveData<Session?>()
     val navigateToFinalize: LiveData<Session?>
         get() = _navigateToFinalize
 
-    fun doneNavigating() {
-        _navigateToFinalize.value = null
+    private val _navigateToSessionsList = MutableLiveData<Boolean?>()
+    val navigateToSessionsList: LiveData<Boolean?>
+        get() = _navigateToSessionsList
+
+    fun onViewSessions() {
+        _navigateToSessionsList.value = true
     }
 
-    val sessionsString = Transformations.map(sessions) { sessions ->
-        formatSessions(sessions, application.resources)
+    fun doneNavigating() {
+        _navigateToFinalize.value = null
+        _navigateToSessionsList.value = null
     }
 
     val mString = Transformations.map(measurements) { measurements ->
         formatMeasurements(measurements, application.resources)
     }
+
+//    private fun formatMeasurements(measurements: List<SessionMeasurements>?, resources: Resources): Spanned {
+//        val sb = StringBuilder()
+//        sb.apply {
+//            measurements?.forEach {
+//                append("<br>")
+//                append(it.session.sessionID)
+//                append(" : ${it.session.title}")
+//                append("<br>")
+//                it.sessionMeasurements.forEach {
+//                    append(convertLongToDateString(it.recorded))
+//                    append("<br>")
+//                    append(it.measurement)
+//                    append("<br>")
+//                }
+//            }
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            return Html.fromHtml(sb.toString(), Html.FROM_HTML_MODE_LEGACY)
+//        } else {
+//            return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+//        }
+//    }
 
     private fun formatMeasurements(measurements: List<Measurement>, resources: Resources): Spanned {
         val sb = StringBuilder()
@@ -54,37 +85,6 @@ class SeismicViewModel(
                 append(convertLongToDateString(it.recorded))
                 append("<br>")
                 append(it.measurement)
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(sb.toString(), Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-        }
-    }
-
-    private fun formatSessions(sessions: List<Session>, resources: Resources): Spanned {
-        val sb = StringBuilder()
-        sb.apply {
-            append(resources.getString(R.string.title))
-            sessions.forEach {
-                append("<br>")
-                append(it.title)
-                append("<br>")
-                append(resources.getString(R.string.start_time))
-                append("\t${convertLongToDateString(it.startTimeMilli)}<br>")
-                if (it.endTimeMilli != it.startTimeMilli) {
-                    append(resources.getString(R.string.end_time))
-                    append("\t${convertLongToDateString(it.endTimeMilli)}<br>")
-                    append(resources.getString(R.string.hours_slept))
-                    // Hours
-                    append("\t ${it.endTimeMilli.minus(it.startTimeMilli) / 1000 / 60 / 60}:")
-                    // Minutes
-                    append("${it.endTimeMilli.minus(it.startTimeMilli) / 1000 / 60}:")
-                    // Seconds
-                    append("${it.endTimeMilli.minus(it.startTimeMilli) / 1000}<br><br>")
-                }
-                append(it.note)
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -108,7 +108,7 @@ class SeismicViewModel(
         it != null
     }
 
-    val clearButtonVisible = Transformations.map(sessions) {
+    val viewButtonVisible = Transformations.map(sessions) {
         it?.isNotEmpty()
     }
 
@@ -150,6 +150,8 @@ class SeismicViewModel(
         viewModelScope.launch {
             val rn: Float = ThreadLocalRandom.current().nextFloat()
             val newMeasurement = Measurement(sessionID = currentSession.value!!.sessionID, measurement = rn)
+//            val dataPoint: DataPoint = DataPoint(0.0, newMeasurement.measurement.toDouble())
+//            graphData.appendData(dataPoint,true,10)
             insertMeasurement(newMeasurement)
         }
     }
@@ -160,8 +162,8 @@ class SeismicViewModel(
 
     fun onStopSession() {
         Log.d(TAG, "Stop session")
-        measurements.value!!.forEach { Log.d(TAG, "${it.measurement} : ${it.sessionID}") }
-        cM.value!!.forEach { Log.d(TAG, "${it.session.sessionID} : ${it.sessionMeasurements.forEach { it.measurement.toString() }} ") }
+//        measurements.value!!.forEach { Log.d(TAG, "${it.measurement} : ${it.sessionID}") }
+//        cM.value!!.forEach { Log.d(TAG, "${it.session.sessionID} : ${it.sessionMeasurements.forEach { it.measurement.toString() }} ") }
         viewModelScope.launch {
             val oldSession = currentSession.value ?: return@launch
             oldSession.endTimeMilli = System.currentTimeMillis()
@@ -172,17 +174,5 @@ class SeismicViewModel(
 
     private suspend fun update(session: Session) {
         database.update(session)
-    }
-
-    fun onClear() {
-        Log.d(TAG, "Clear Table")
-        viewModelScope.launch {
-            clear()
-            currentSession.value = null
-        }
-    }
-
-    private suspend fun clear() {
-        database.clearSessions()
     }
 }
