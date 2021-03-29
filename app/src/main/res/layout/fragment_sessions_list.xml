@@ -14,16 +14,15 @@
         android:layout_height="match_parent"
         tools:context=".screens.SessionsList">
 
-        <TextView
-            android:id="@+id/displayDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{sessionsListViewModel.sessionsString}"
-            android:textAlignment="center"
-            android:layout_marginBottom="100dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sessionsListRecycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/clearSessions"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/clearSessions"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <Button
             android:id="@+id/clearSessions"
