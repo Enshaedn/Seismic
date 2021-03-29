@@ -64,11 +64,6 @@ class SeismicFinalize : Fragment()/*, SensorEventListener*/ {
 
         binding.setLifecycleOwner(this)
 
-        //Not working to update on click
-        binding.apply {
-            sessionTitle = sessionTitleEdit.text.toString()
-            sessionNote = sessionNoteEdit.text.toString()
-        }
         binding.seismicFinalizeViewModel = seismicFinalizeViewModel
 
         return binding.root

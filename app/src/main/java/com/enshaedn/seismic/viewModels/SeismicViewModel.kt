@@ -10,10 +10,13 @@ import android.util.Log
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.*
 import com.enshaedn.seismic.R
+import com.enshaedn.seismic.database.Measurement
 import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
+import com.enshaedn.seismic.database.SessionMeasurements
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.concurrent.ThreadLocalRandom
 
 class SeismicViewModel(
     val database: SeismicDao, application: Application
@@ -21,6 +24,8 @@ class SeismicViewModel(
     private val TAG = "SEISMIC_LOG"
     private var currentSession = MutableLiveData<Session?>()
     private val sessions = database.getAllSessions()
+    private val measurements = database.getAllMeasurements()
+    private var cM = MutableLiveData<List<SessionMeasurements>?>()
 
     private val _navigateToFinalize = MutableLiveData<Session?>()
     val navigateToFinalize: LiveData<Session?>
@@ -34,7 +39,29 @@ class SeismicViewModel(
         formatSessions(sessions, application.resources)
     }
 
-    val currentSessionString = currentSession.value?.sessionID.toString()
+    val mString = Transformations.map(measurements) { measurements ->
+        formatMeasurements(measurements, application.resources)
+    }
+
+    private fun formatMeasurements(measurements: List<Measurement>, resources: Resources): Spanned {
+        val sb = StringBuilder()
+        sb.apply {
+            measurements.forEach {
+                append("<br>")
+                append(it.measurementID)
+                append(" : ${it.sessionID}")
+                append("<br>")
+                append(convertLongToDateString(it.recorded))
+                append("<br>")
+                append(it.measurement)
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(sb.toString(), Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
 
     private fun formatSessions(sessions: List<Session>, resources: Resources): Spanned {
         val sb = StringBuilder()
@@ -95,8 +122,12 @@ class SeismicViewModel(
 
     private suspend fun getCurrentSessionFromDB() : Session? {
         var session = database.getCurrentSession()
+        if(session != null) {
+            cM.value = database.getSessionMeasurements(session.sessionID)
+        }
         if(session?.startTimeMilli != session?.endTimeMilli) {
             session = null
+            cM.value = null
         }
         return session
     }
@@ -111,11 +142,26 @@ class SeismicViewModel(
     }
 
     private suspend fun insert(session: Session) {
-        database.insertSession(session)
+        database.insert(session)
+    }
+
+    fun onGenerateRandom() {
+        Log.d(TAG, "Generating a random number")
+        viewModelScope.launch {
+            val rn: Float = ThreadLocalRandom.current().nextFloat()
+            val newMeasurement = Measurement(sessionID = currentSession.value!!.sessionID, measurement = rn)
+            insertMeasurement(newMeasurement)
+        }
+    }
+
+    private suspend fun insertMeasurement(m: Measurement) {
+        database.insert(m)
     }
 
     fun onStopSession() {
         Log.d(TAG, "Stop session")
+        measurements.value!!.forEach { Log.d(TAG, "${it.measurement} : ${it.sessionID}") }
+        cM.value!!.forEach { Log.d(TAG, "${it.session.sessionID} : ${it.sessionMeasurements.forEach { it.measurement.toString() }} ") }
         viewModelScope.launch {
             val oldSession = currentSession.value ?: return@launch
             oldSession.endTimeMilli = System.currentTimeMillis()
@@ -125,7 +171,7 @@ class SeismicViewModel(
     }
 
     private suspend fun update(session: Session) {
-        database.updateSession(session)
+        database.update(session)
     }
 
     fun onClear() {

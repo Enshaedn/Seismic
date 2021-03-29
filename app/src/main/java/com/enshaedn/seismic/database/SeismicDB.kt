@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Session::class],
-    version = 1,
+    entities = [Session::class, Measurement::class],
+    version = 2,
     exportSchema = false
 )
 abstract class SeismicDB : RoomDatabase() {

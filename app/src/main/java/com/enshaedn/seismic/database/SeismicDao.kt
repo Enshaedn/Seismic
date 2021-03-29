@@ -5,14 +5,15 @@ import androidx.room.*
 
 @Dao
 interface SeismicDao {
+    //Session Queries
     @Insert
-    suspend fun insertSession(session: Session)
+    suspend fun insert(session: Session)
 
     @Update
-    suspend fun updateSession(session: Session)
+    suspend fun update(session: Session)
 
     @Delete
-    suspend fun deleteSession(session: Session)
+    suspend fun delete(session: Session)
 
     @Query("SELECT * FROM session_table WHERE sessionID = :key")
     suspend fun get(key: Long): Session?
@@ -25,4 +26,16 @@ interface SeismicDao {
 
     @Query("SELECT * FROM session_table ORDER BY sessionID DESC")
     fun getAllSessions(): LiveData<List<Session>>
+
+    //Measurement Queries
+    @Insert
+    suspend fun insert(vararg measurement: Measurement)
+
+    @Query("SELECT * FROM measurement_table ORDER BY measurementID DESC")
+    fun getAllMeasurements(): LiveData<List<Measurement>>
+
+    //SessionMeasurements Query
+    @Transaction
+    @Query("SELECT * FROM session_table WHERE sessionID = :key")
+    suspend fun getSessionMeasurements(key: Long): List<SessionMeasurements>
 }

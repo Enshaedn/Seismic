@@ -16,6 +16,17 @@
         tools:context=".screens.SeismicHome">
 
         <TextView
+            android:id="@+id/displayMeasurements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{seismicViewModel.mString}"
+            android:textAlignment="center"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/displayDemo"/>
+
+        <TextView
             android:id="@+id/displayDemo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,6 +44,17 @@
             android:text="@string/startSession"
             android:enabled="@{seismicViewModel.startButtonVisible}"
             android:onClick="@{() -> seismicViewModel.onStartSession()}"
+            app:layout_constraintBottom_toTopOf="@id/generateRandom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/generateRandom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/randomDataPoint"
+            android:enabled="@{seismicViewModel.stopButtonVisible}"
+            android:onClick="@{() -> seismicViewModel.onGenerateRandom()}"
             app:layout_constraintBottom_toTopOf="@id/stopSession"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

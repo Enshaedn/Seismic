@@ -12,11 +12,12 @@ data class Measurement(
     @PrimaryKey(autoGenerate = true)
     var measurementID: Long = 0L,
 
-    @ColumnInfo(name = "sessionID")
+    @ColumnInfo(name = "sessionID", index = true)
     val sessionID: Long,
 
     @ColumnInfo(name = "timestamp_recorded")
-    val recordedTimeStamp: Timestamp,
+//    val recordedTimeStamp: Timestamp,
+    val recorded: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "measurement")
     val measurement: Float
@@ -24,6 +25,7 @@ data class Measurement(
 
 data class SessionMeasurements(
     @Embedded
+    val session: Session,
     @Relation(
         parentColumn = "sessionID",
         entityColumn = "sessionID"

@@ -6,6 +6,7 @@
     <string name="stopSession">Stop Session</string>
     <string name="clearSessions">Clear Sessions</string>
     <string name="saveSession">Save Session</string>
+    <string name="randomDataPoint">Random Float</string>
 
     <!-- Edit Text Prompts/Hints -->
     <string name="sessionTitle">Add a session title</string>
