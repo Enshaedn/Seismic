@@ -10,7 +10,8 @@ import kotlinx.coroutines.launch
 class SeismicFinalizeViewModel(
     private val sessionKey: Long = 0L,
     val database: SeismicDao
-    ) : ViewModel() {
+    ) : ViewModel()
+{
     // 2-way-ish data binding for edit texts - need values to update Session info
     val sessionTitle = MutableLiveData<String>()
     val sessionNote = MutableLiveData<String>()

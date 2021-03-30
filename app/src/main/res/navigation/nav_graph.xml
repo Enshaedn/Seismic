@@ -30,8 +30,25 @@
             android:id="@+id/action_seismicFinalize_to_seismicHome"
             app:destination="@id/seismicHome" />
     </fragment>
+
     <fragment
         android:id="@+id/sessionsList"
         android:name="com.enshaedn.seismic.screens.SessionsList"
-        android:label="SessionsList" />
+        android:label="SessionsList" >
+        <action
+            android:id="@+id/action_sessionsList_to_sessionDetail"
+            app:destination="@id/sessionDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sessionDetail"
+        android:name="com.enshaedn.seismic.screens.SessionDetail"
+        android:label="SessionDetail" >
+        <argument
+            android:name="sessionKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_sessionDetail_to_sessionsList"
+            app:destination="@id/sessionsList" />
+    </fragment>
 </navigation>

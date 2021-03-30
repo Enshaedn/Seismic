@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.enshaedn.seismic.database.Session
 import com.enshaedn.seismic.databinding.SessionItemViewBinding
 
-class SessionListAdapter: ListAdapter<Session, SessionListAdapter.ViewHolder>(SessionListDiffCallback()) {
+class SessionListAdapter(val clickListener: SessionDetailListener): ListAdapter<Session, SessionListAdapter.ViewHolder>(SessionListDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        holder.bind(getItem(position), clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,10 +19,11 @@ class SessionListAdapter: ListAdapter<Session, SessionListAdapter.ViewHolder>(Se
     }
 
     class ViewHolder private constructor(val binding: SessionItemViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Session) {
+        fun bind(item: Session, clickListener: SessionDetailListener) {
             // Res needed for resource access - ie. R.drawable etc - not currently necessary for this app
             // val res = holder.itemView.context.resources
             binding.sessionItem = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -45,5 +45,8 @@ class SessionListDiffCallback : DiffUtil.ItemCallback<Session>() {
     override fun areContentsTheSame(oldItem: Session, newItem: Session): Boolean {
         return oldItem == newItem
     }
+}
 
+class SessionDetailListener(val clickListener: (sessionID: Long) -> Unit) {
+    fun onClick(session: Session) = clickListener(session.sessionID)
 }

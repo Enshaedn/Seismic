@@ -18,6 +18,9 @@ interface SeismicDao {
     @Query("SELECT * FROM session_table WHERE sessionID = :key")
     suspend fun get(key: Long): Session?
 
+    @Query("SELECT * FROM session_table WHERE sessionID = :key")
+    fun getSessionByID(key: Long): LiveData<Session>
+
     @Query("DELETE FROM session_table")
     suspend fun clearSessions()
 
