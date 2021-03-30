@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Session Item RecyclerView DP values -->
+    <dimen name="sessionItemPadding">10dp</dimen>
+    <dimen name="sessionItemMargin">10dp</dimen>
+    <dimen name="sessionItemCardMargin">5dp</dimen>
+
+    <!-- Session Item RecyclerView SP values -->
+    <dimen name="sessionItemTitleSize">24sp</dimen>
+    <dimen name="sessionItemDateSize">16sp</dimen>
+</resources>

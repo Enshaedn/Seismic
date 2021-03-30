@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.enshaedn.seismic.R
 import com.enshaedn.seismic.database.SeismicDB
@@ -34,15 +33,15 @@ class SessionsList : Fragment() {
 
         val dataSource = SeismicDB.getInstance(application).seismicDao
 
-        val viewModelFactory = SessionsListViewModelFactory(dataSource, application)
+        val viewModelFactory = SessionsListViewModelFactory(dataSource)
 
         val sessionsListViewModel = ViewModelProvider(this, viewModelFactory).get(SessionsListViewModel::class.java)
 
         val adapter = SessionListAdapter()
 
-        sessionsListViewModel.sessions.observe(viewLifecycleOwner, Observer {
+        sessionsListViewModel.sessions.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 

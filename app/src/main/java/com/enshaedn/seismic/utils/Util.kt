@@ -1,8 +1,6 @@
 package com.enshaedn.seismic.utils
 
 import android.annotation.SuppressLint
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
@@ -11,4 +9,8 @@ fun convertLongToDateString(systemTime: Long): String {
         .format(systemTime).toString()
 }
 
-class SessionItemViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+@SuppressLint("SimpleDateFormat")
+fun convertLongToDateOnlyString(systemTime: Long): String {
+    return SimpleDateFormat("MM/dd/yy")
+        .format(systemTime).toString()
+}
