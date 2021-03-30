@@ -8,4 +8,7 @@
     <!-- Session Item RecyclerView SP values -->
     <dimen name="sessionItemTitleSize">24sp</dimen>
     <dimen name="sessionItemDateSize">16sp</dimen>
+
+    <!-- Session Detail SP values -->
+    <dimen name="sessionDetailTitleSize">20sp</dimen>
 </resources>

@@ -41,4 +41,8 @@ interface SeismicDao {
     @Transaction
     @Query("SELECT * FROM session_table WHERE sessionID = :key")
     suspend fun getSessionMeasurements(key: Long): List<SessionMeasurements>
+
+    @Transaction
+    @Query("SELECT * FROM session_table WHERE sessionID = :key")
+    fun getMeasurementsByID(key: Long): LiveData<SessionMeasurements>
 }

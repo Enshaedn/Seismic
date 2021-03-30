@@ -43,30 +43,6 @@ class SeismicViewModel(
         _navigateToSessionsList.value = null
     }
 
-    val mString = Transformations.map(measurements) { measurements ->
-        formatMeasurements(measurements, application.resources)
-    }
-
-    private fun formatMeasurements(measurements: List<Measurement>, resources: Resources): Spanned {
-        val sb = StringBuilder()
-        sb.apply {
-            measurements.forEach {
-                append("<br>")
-                append(it.measurementID)
-                append(" : ${it.sessionID}")
-                append("<br>")
-                append(convertLongToDateString(it.recorded))
-                append("<br>")
-                append(it.measurement)
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(sb.toString(), Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            return HtmlCompat.fromHtml(sb.toString(), HtmlCompat.FROM_HTML_MODE_LEGACY)
-        }
-    }
-
     val startButtonVisible = Transformations.map(currentSession) {
         it == null
     }
@@ -117,8 +93,6 @@ class SeismicViewModel(
         viewModelScope.launch {
             val rn: Float = ThreadLocalRandom.current().nextFloat()
             val newMeasurement = Measurement(sessionID = currentSession.value!!.sessionID, measurement = rn)
-//            val dataPoint: DataPoint = DataPoint(0.0, newMeasurement.measurement.toDouble())
-//            graphData.appendData(dataPoint,true,10)
             insertMeasurement(newMeasurement)
         }
     }
@@ -129,8 +103,6 @@ class SeismicViewModel(
 
     fun onStopSession() {
         Log.d(TAG, "Stop session")
-//        measurements.value!!.forEach { Log.d(TAG, "${it.measurement} : ${it.sessionID}") }
-//        cM.value!!.forEach { Log.d(TAG, "${it.session.sessionID} : ${it.sessionMeasurements.forEach { it.measurement.toString() }} ") }
         viewModelScope.launch {
             val oldSession = currentSession.value ?: return@launch
             oldSession.endTimeMilli = System.currentTimeMillis()

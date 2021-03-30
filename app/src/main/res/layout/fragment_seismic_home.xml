@@ -24,17 +24,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:seriesData="0=1;1=2;2=3;3=3;4=2"/>
 
-        <TextView
-            android:id="@+id/displayMeasurements"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{seismicViewModel.mString}"
-            android:textAlignment="center"
-            android:layout_marginBottom="100dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/startSession"/>
-
         <Button
             android:id="@+id/startSession"
             android:layout_width="wrap_content"

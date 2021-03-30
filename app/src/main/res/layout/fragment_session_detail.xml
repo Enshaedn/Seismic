@@ -18,7 +18,9 @@
             android:id="@+id/sessionDetailTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={sessionDetailViewModel.session.title}"
+            android:text="@={sessionDetailViewModel.session.session.title}"
+            android:textSize="@dimen/sessionItemTitleSize"
+            android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

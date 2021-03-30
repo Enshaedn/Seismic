@@ -1,6 +1,7 @@
 package com.enshaedn.seismic.screens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,10 @@ import com.enshaedn.seismic.database.SeismicDB
 import com.enshaedn.seismic.databinding.FragmentSessionDetailBinding
 import com.enshaedn.seismic.viewModels.SessionDetailViewModel
 import com.enshaedn.seismic.viewModels.SessionDetailViewModelFactory
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 
 class SessionDetail : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val TAG = "SEISMIC_LOG"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +34,28 @@ class SessionDetail : Fragment() {
 
         val sessionDetailViewModel = ViewModelProvider(this, viewModelFactory).get(SessionDetailViewModel::class.java)
 
-        binding.setLifecycleOwner(this)
+        sessionDetailViewModel.getSession().observe(viewLifecycleOwner, {
+            it?.let {
+                Log.d(TAG, "Session Loaded?")
+                sessionDetailViewModel.gatherDataPoints()
+            }
+        })
+
+        sessionDetailViewModel.getDataPoints().observe(viewLifecycleOwner, {
+            if(it != null) {
+                binding.sessionDetailGraph.apply {
+                    addSeries(it)
+                    gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
+                    gridLabelRenderer.numHorizontalLabels = 3
+                    viewport.setMinX(it.lowestValueX)
+                    viewport.setMaxX(it.highestValueX)
+                    viewport.isXAxisBoundsManual = true
+                    gridLabelRenderer.setHumanRounding(false)
+                }
+            }
+        })
+
+        binding.lifecycleOwner = this
 
         binding.sessionDetailViewModel = sessionDetailViewModel
 

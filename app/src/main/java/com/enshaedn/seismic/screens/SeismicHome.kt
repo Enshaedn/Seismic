@@ -57,17 +57,6 @@ class SeismicHome : Fragment() {
             }
         })
 
-//        val graph: GraphView = binding.activeGraph
-//        graph.addSeries(seismicViewModel.graphData)
-
-//        seismicViewModel.cM.observe(viewLifecycleOwner, {
-//            it?.forEach {
-//                it.sessionMeasurements.forEach {
-//                    Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement}")
-//                }
-//            }
-//        })
-
         binding.setLifecycleOwner(this)
 
         binding.seismicViewModel = seismicViewModel
