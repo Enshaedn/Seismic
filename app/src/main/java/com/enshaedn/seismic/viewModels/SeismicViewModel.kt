@@ -13,6 +13,9 @@ import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
 import com.enshaedn.seismic.database.SessionMeasurements
 import com.enshaedn.seismic.utils.convertLongToDateString
+import com.enshaedn.seismic.utils.convertStringDateToDate
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.launch
 import java.util.concurrent.ThreadLocalRandom
 
@@ -22,9 +25,24 @@ class SeismicViewModel(
     private val TAG = "SEISMIC_LOG"
     private var currentSession = MutableLiveData<Session?>()
     private val sessions = database.getAllSessions()
-    private val measurements = database.getAllMeasurements()
+    //Null value crashing app on launch
+//    private val activeSessionData: LiveData<SessionMeasurements> = database.getMeasurementsByID(currentSession.value.sessionID)
+//    private val dataPoints = MutableLiveData<LineGraphSeries<DataPoint>>()
     private var cM = MutableLiveData<List<SessionMeasurements>?>()
 //    lateinit var graphData: LineGraphSeries<DataPoint>
+
+//    fun getActiveSessionData() = activeSessionData
+
+//    fun getDataPoints() = dataPoints
+//
+//    fun gatherDataPoints() {
+//        val dp = LineGraphSeries<DataPoint>()
+//        activeSessionData.value!!.sessionMeasurements.forEach {
+//            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement} : ${convertStringDateToDate(it.recorded)}")
+//            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.measurement.toDouble()), true, 10)
+//        }
+//        dataPoints.value = dp
+//    }
 
     private val _navigateToFinalize = MutableLiveData<Session?>()
     val navigateToFinalize: LiveData<Session?>

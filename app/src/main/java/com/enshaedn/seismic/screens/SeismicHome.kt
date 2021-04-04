@@ -53,6 +53,20 @@ class SeismicHome : Fragment() {
             }
         })
 
+//        seismicViewModel.getActiveSessionData().observe(viewLifecycleOwner, {
+//            it?.let {
+//                Log.d(TAG, it.session.sessionID.toString())
+//                seismicViewModel.gatherDataPoints()
+//            }
+//        })
+
+//        seismicViewModel.getDataPoints().observe(viewLifecycleOwner, {
+//            if(it != null) {
+//                Log.d(TAG, "Data Points")
+//                it.getValues(it.lowestValueX, it.highestValueX).forEach { Log.d(TAG, it.toString()) }
+//            }
+//        })
+
         binding.setLifecycleOwner(this)
 
         binding.seismicViewModel = seismicViewModel
