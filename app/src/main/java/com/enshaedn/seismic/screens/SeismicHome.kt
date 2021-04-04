@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.enshaedn.seismic.database.SeismicDB
@@ -15,9 +14,6 @@ import com.enshaedn.seismic.R
 import com.enshaedn.seismic.viewModels.SeismicViewModel
 import com.enshaedn.seismic.viewModels.SeismicViewModelFactory
 import com.enshaedn.seismic.databinding.FragmentSeismicHomeBinding
-import com.jjoe64.graphview.GraphView
-import com.jjoe64.graphview.series.DataPoint
-import com.jjoe64.graphview.series.LineGraphSeries
 
 class SeismicHome : Fragment() {
     private val TAG = "SEISMIC_LOG"
@@ -43,7 +39,7 @@ class SeismicHome : Fragment() {
 
         val seismicViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicViewModel::class.java)
 
-        seismicViewModel.navigateToFinalize.observe(viewLifecycleOwner, Observer { session ->
+        seismicViewModel.navigateToFinalize.observe(viewLifecycleOwner, { session ->
             session?.let {
                 this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSeismicFinalize(session.sessionID))
                 seismicViewModel.doneNavigating()
