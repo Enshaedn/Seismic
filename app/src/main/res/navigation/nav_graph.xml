@@ -11,11 +11,11 @@
         android:label="fragment_seismic_home"
         tools:layout="@layout/fragment_seismic_home" >
         <action
-            android:id="@+id/action_seismicHome_to_seismicFinalize"
-            app:destination="@id/seismicFinalize" />
-        <action
             android:id="@+id/action_seismicHome_to_sessionsList"
             app:destination="@id/sessionsList" />
+        <action
+            android:id="@+id/action_seismicHome_to_seismicActive"
+            app:destination="@id/seismicActive" />
     </fragment>
 
     <fragment
@@ -50,5 +50,18 @@
         <action
             android:id="@+id/action_sessionDetail_to_sessionsList"
             app:destination="@id/sessionsList" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/seismicActive"
+        android:name="com.enshaedn.seismic.screens.SeismicActive"
+        android:label="fragment_seismic_active"
+        tools:layout="@layout/fragment_seismic_active" >
+        <argument
+            android:name="sessionKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_seismicActive_to_seismicFinalize"
+            app:destination="@id/seismicFinalize" />
     </fragment>
 </navigation>

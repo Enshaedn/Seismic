@@ -1,7 +1,6 @@
 package com.enshaedn.seismic.screens
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,19 +15,10 @@ import com.enshaedn.seismic.viewModels.SeismicViewModelFactory
 import com.enshaedn.seismic.databinding.FragmentSeismicHomeBinding
 
 class SeismicHome : Fragment() {
-    private val TAG = "SEISMIC_LOG"
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Seismic Home Create")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        Log.d(TAG, "Seismic Home Create View")
         val binding: FragmentSeismicHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_seismic_home, container, false)
 
         val application = requireNotNull(this.activity).application
@@ -39,33 +29,21 @@ class SeismicHome : Fragment() {
 
         val seismicViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicViewModel::class.java)
 
-        seismicViewModel.navigateToFinalize.observe(viewLifecycleOwner, { session ->
-            session?.let {
-                this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSeismicFinalize(session.sessionID))
+        // Navigate to Active Screen with Active Session Key
+        seismicViewModel.navigateToActive.observe(viewLifecycleOwner, { activeKey ->
+            activeKey?.let {
+                this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSeismicActive(activeKey))
                 seismicViewModel.doneNavigating()
             }
         })
 
+        // Navigate to the List Screen
         seismicViewModel.navigateToSessionsList.observe(viewLifecycleOwner, {
             if(it == true) {
                 this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSessionsList())
                 seismicViewModel.doneNavigating()
             }
         })
-
-//        seismicViewModel.getActiveSessionData().observe(viewLifecycleOwner, {
-//            it?.let {
-//                Log.d(TAG, it.session.sessionID.toString())
-//                seismicViewModel.gatherDataPoints()
-//            }
-//        })
-
-//        seismicViewModel.getDataPoints().observe(viewLifecycleOwner, {
-//            if(it != null) {
-//                Log.d(TAG, "Data Points")
-//                it.getValues(it.lowestValueX, it.highestValueX).forEach { Log.d(TAG, it.toString()) }
-//            }
-//        })
 
         binding.setLifecycleOwner(this)
 

@@ -1,13 +1,14 @@
 package com.enshaedn.seismic.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao
 interface SeismicDao {
     //Session Queries
     @Insert
-    suspend fun insert(session: Session)
+    suspend fun insert(session: Session): Long
 
     @Update
     suspend fun update(session: Session)

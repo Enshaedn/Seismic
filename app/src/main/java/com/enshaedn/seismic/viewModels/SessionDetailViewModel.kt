@@ -13,7 +13,7 @@ import com.jjoe64.graphview.series.LineGraphSeries
 class SessionDetailViewModel(private val sessionKey: Long = 0L, dataSource: SeismicDao) : ViewModel()
 {
     private val TAG = "SEISMIC_LOG"
-    val database = dataSource
+    private val database = dataSource
     private val session: LiveData<SessionMeasurements> = database.getMeasurementsByID(sessionKey)
     private val dataPoints = MutableLiveData<LineGraphSeries<DataPoint>>()
 
@@ -31,7 +31,6 @@ class SessionDetailViewModel(private val sessionKey: Long = 0L, dataSource: Seis
     }
 
     private val _navigateToSessionsList = MutableLiveData<Boolean?>()
-
     val navigateToSessionsList: LiveData<Boolean?>
         get() = _navigateToSessionsList
 
