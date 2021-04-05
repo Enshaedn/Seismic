@@ -24,10 +24,12 @@ class SeismicActiveViewModel(
     val navigateToFinalize: LiveData<Long?>
         get() = _navigateToFinalize
 
+    // Reset Navigation variables
     fun doneNavigating() {
         _navigateToFinalize.value = null
     }
 
+    // Placeholder for accelerometer data generation
     fun onGenerateRandom() {
         Log.d(TAG, "Generating a random number")
         viewModelScope.launch {
@@ -41,19 +43,22 @@ class SeismicActiveViewModel(
         database.insert(m)
     }
 
+    // End session recording
     fun onStopSession() {
         Log.d(TAG, "Stop session: ${activeKey}")
         viewModelScope.launch {
-            val oldSession = database.get(activeKey) ?: return@launch
-//            val oldSession = activeSession.value?.session ?: return@launch
+            // Update active session's end time to current system time
+//            val oldSession = database.get(activeKey) ?: return@launch
+            val oldSession = activeSession.value?.session ?: return@launch
             oldSession.endTimeMilli = System.currentTimeMillis()
+            // Update session's data in DB
             update(oldSession)
+            // Propagate active session key via navigateToFinalize
             _navigateToFinalize.value = activeKey
         }
     }
 
     private suspend fun update(session: Session) {
-        Log.d(TAG, "Updating Session: ${session.sessionID} with end time: ${session.endTimeMilli} vs start time: ${session.startTimeMilli}")
         database.update(session)
     }
 }

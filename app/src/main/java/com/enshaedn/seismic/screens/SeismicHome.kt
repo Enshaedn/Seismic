@@ -29,7 +29,7 @@ class SeismicHome : Fragment() {
 
         val seismicViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicViewModel::class.java)
 
-        // Navigate to Active Screen with Active Session Key
+        // Navigate to Active Screen with active session primary key
         seismicViewModel.navigateToActive.observe(viewLifecycleOwner, { activeKey ->
             activeKey?.let {
                 this.findNavController().navigate(SeismicHomeDirections.actionSeismicHomeToSeismicActive(activeKey))

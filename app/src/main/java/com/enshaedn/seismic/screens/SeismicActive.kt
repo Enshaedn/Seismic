@@ -29,22 +29,21 @@ class SeismicActive : Fragment() {
 
         val arguments = SeismicActiveArgs.fromBundle(requireArguments())
 
-        Log.d(TAG, "Args: ${arguments.sessionKey}")
-
         val dataSource = SeismicDB.getInstance(application).seismicDao
 
         val viewModelFactory = SeismicActiveViewModelFactory(arguments.sessionKey, dataSource)
 
         val seismicActiveViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicActiveViewModel::class.java)
 
+        // Navigate to Finalize Screen with active session primary key
         seismicActiveViewModel.navigateToFinalize.observe(viewLifecycleOwner, { activeKey ->
             activeKey?.let {
-                Log.d(TAG, "Go to Finalize Screen")
                 this.findNavController().navigate(SeismicActiveDirections.actionSeismicActiveToSeismicFinalize(activeKey))
                 seismicActiveViewModel.doneNavigating()
             }
         })
 
+        // Observe the active session's SessionMeasurement
         seismicActiveViewModel.getActiveSession().observe(viewLifecycleOwner, {
             it?.let {
                 Log.d(TAG, "${it.session.sessionID}")

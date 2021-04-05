@@ -31,7 +31,6 @@ class SeismicViewModel(
     fun doneNavigating() {
         _navigateToActive.value = null
         _navigateToSessionsList.value = null
-        Log.d(TAG, "Done Navigating to Active Screen - ${_navigateToActive.value}")
     }
 
     // Start Button Controller - may need to implement a continue button or hard stop any interruptions
@@ -55,7 +54,6 @@ class SeismicViewModel(
     private suspend fun getCurrentSessionFromDB() : Session? {
         // Gets the last session in the DB, LIMIT 1
         var session = database.getCurrentSession()
-        Log.d(TAG, "Start Time: ${session?.startTimeMilli} vs End Time: ${session?.endTimeMilli}")
         // If session is still active, return session else set to null so that a new session may be started
         if(session?.startTimeMilli != session?.endTimeMilli) {
             session = null
@@ -69,7 +67,7 @@ class SeismicViewModel(
             // Instantiate a new Session to insert in DB
             val newSession = Session()
             insert(newSession)
-            // Set current session value equal to latest session
+            // Set current session value equal to latest session in DB
             currentSession.value = getCurrentSessionFromDB()
             // Set navigateToActive value to the new PK for the new Session
             _navigateToActive.value = activeKey.value
