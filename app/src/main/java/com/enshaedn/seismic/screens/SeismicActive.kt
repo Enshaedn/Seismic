@@ -14,6 +14,7 @@ import com.enshaedn.seismic.database.SeismicDB
 import com.enshaedn.seismic.databinding.FragmentSeismicActiveBinding
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModel
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModelFactory
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 
 class SeismicActive : Fragment() {
     private val TAG = "SEISMIC_LOG"
@@ -46,9 +47,24 @@ class SeismicActive : Fragment() {
         // Observe the active session's SessionMeasurement
         seismicActiveViewModel.getActiveSession().observe(viewLifecycleOwner, {
             it?.let {
-                Log.d(TAG, "${it.session.sessionID}")
+                seismicActiveViewModel.gatherDataPoints()
                 it.sessionMeasurements.forEach {
                     Log.d(TAG, "${it.measurementID} : ${it.measurement}")
+                }
+            }
+        })
+
+        // Update Graph View
+        seismicActiveViewModel.getDataPoints().observe(viewLifecycleOwner, {
+            if(it != null) {
+                binding.activeGraph.apply {
+                    addSeries(it)
+                    gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
+                    gridLabelRenderer.numHorizontalLabels = 3
+                    viewport.setMinX(it.lowestValueX)
+                    viewport.setMaxX(it.highestValueX)
+                    viewport.isXAxisBoundsManual = true
+                    gridLabelRenderer.setHumanRounding(false)
                 }
             }
         })

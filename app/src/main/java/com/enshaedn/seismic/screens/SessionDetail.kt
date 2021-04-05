@@ -13,6 +13,7 @@ import com.enshaedn.seismic.database.SeismicDB
 import com.enshaedn.seismic.databinding.FragmentSessionDetailBinding
 import com.enshaedn.seismic.viewModels.SessionDetailViewModel
 import com.enshaedn.seismic.viewModels.SessionDetailViewModelFactory
+import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 
 class SessionDetail : Fragment() {
@@ -46,11 +47,13 @@ class SessionDetail : Fragment() {
                 binding.sessionDetailGraph.apply {
                     addSeries(it)
                     gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
-                    gridLabelRenderer.numHorizontalLabels = 3
+//                    gridLabelRenderer.numHorizontalLabels = 3
                     viewport.setMinX(it.lowestValueX)
                     viewport.setMaxX(it.highestValueX)
                     viewport.isXAxisBoundsManual = true
                     gridLabelRenderer.setHumanRounding(false)
+//                    viewport.setScalableY(true)
+                    viewport.isScalable = true
                 }
             }
         })

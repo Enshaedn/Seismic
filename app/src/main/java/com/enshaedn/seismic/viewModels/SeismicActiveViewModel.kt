@@ -6,6 +6,9 @@ import com.enshaedn.seismic.database.Measurement
 import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
 import com.enshaedn.seismic.database.SessionMeasurements
+import com.enshaedn.seismic.utils.convertStringDateToDate
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.launch
 import java.util.concurrent.ThreadLocalRandom
 
@@ -17,8 +20,20 @@ class SeismicActiveViewModel(
     private val TAG = "SEISMIC_LOG"
     private val database = dataSource
     private val activeSession: LiveData<SessionMeasurements> = database.getMeasurementsByID(activeKey)
+    private val dataPoints = MutableLiveData<LineGraphSeries<DataPoint>>()
 
     fun getActiveSession() = activeSession
+
+    fun getDataPoints() = dataPoints
+
+    fun gatherDataPoints() {
+        val dp = LineGraphSeries<DataPoint>()
+        activeSession.value!!.sessionMeasurements.forEach {
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement} : ${convertStringDateToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.measurement.toDouble()), true, 10)
+        }
+        dataPoints.value = dp
+    }
 
     private val _navigateToFinalize = MutableLiveData<Long?>()
     val navigateToFinalize: LiveData<Long?>
