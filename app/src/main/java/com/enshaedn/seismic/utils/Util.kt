@@ -6,7 +6,7 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 fun convertLongToDateString(systemTime: Long): String {
-    return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm:ss")
+    return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm:ss:SSS")
         .format(systemTime).toString()
 }
 
@@ -19,5 +19,5 @@ fun convertLongToDateOnlyString(systemTime: Long): String {
 @Suppress("SimpleDateFormat")
 fun convertStringDateToDate(systemTime: Long): Date {
     val date = convertLongToDateString(systemTime)
-    return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm:ss").parse(date)
+    return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm:ss:SSS").parse(date)
 }

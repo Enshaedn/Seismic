@@ -6,6 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.enshaedn.seismic.R
 import com.enshaedn.seismic.database.SeismicDB
 import com.enshaedn.seismic.databinding.FragmentSeismicActiveBinding
+import com.enshaedn.seismic.utils.convertLongToDateString
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModel
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModelFactory
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
@@ -110,9 +112,12 @@ class SeismicActive : Fragment(), SensorEventListener {
         accelData[0] = event.values[0] - gravity[0]
         accelData[1] = event.values[1] - gravity[1]
         accelData[2] = event.values[2] - gravity[2]
+        // event.timestamp is a Long, but in nanoseconds
         val t = event.timestamp
+        val tInMilli = System.currentTimeMillis() + (t - SystemClock.elapsedRealtimeNanos()) / 1000000
 
-        Log.d(TAG, event.sensor.name + " : " + accelData[0].toString() + " : " + accelData[1].toString() + " : " + accelData[2].toString())
+        Log.d(TAG, "${event.sensor.name}: ${accelData[0]}, ${accelData[1]}, ${accelData[2]} : ${t} vs ${SystemClock.elapsedRealtimeNanos()}")
+        Log.d(TAG, "${tInMilli} : ${convertLongToDateString(tInMilli)}")
     }
 
     override fun onResume() {
