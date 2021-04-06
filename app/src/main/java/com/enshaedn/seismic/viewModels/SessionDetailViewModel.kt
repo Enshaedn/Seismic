@@ -9,6 +9,8 @@ import com.enshaedn.seismic.database.SessionMeasurements
 import com.enshaedn.seismic.utils.convertStringDateToDate
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class SessionDetailViewModel(private val sessionKey: Long = 0L, dataSource: SeismicDao) : ViewModel()
 {
@@ -24,8 +26,9 @@ class SessionDetailViewModel(private val sessionKey: Long = 0L, dataSource: Seis
     fun gatherDataPoints() {
         val dp = LineGraphSeries<DataPoint>()
         session.value!!.sessionMeasurements.forEach {
-            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.xValue} : ${convertStringDateToDate(it.recorded)}")
-            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.xValue.toDouble()), true, 10)
+            val magnitude = sqrt(it.xValue.pow(2) + it.yValue.pow(2) + it.zValue.pow(2))
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${magnitude} : ${convertStringDateToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), magnitude.toDouble()), true, 10)
         }
         dataPoints.value = dp
     }

@@ -29,6 +29,7 @@ class SeismicActive : Fragment(), SensorEventListener {
     private var mAccel: Sensor? = null
     private val gravity = FloatArray(3)
     private val accelData = FloatArray(3)
+    private lateinit var seismicActiveViewModel: SeismicActiveViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class SeismicActive : Fragment(), SensorEventListener {
 
         val viewModelFactory = SeismicActiveViewModelFactory(arguments.sessionKey, dataSource)
 
-        val seismicActiveViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicActiveViewModel::class.java)
+        seismicActiveViewModel = ViewModelProvider(this, viewModelFactory).get(SeismicActiveViewModel::class.java)
 
         // Navigate to Finalize Screen with active session primary key
         seismicActiveViewModel.navigateToFinalize.observe(viewLifecycleOwner, { activeKey ->
@@ -113,6 +114,8 @@ class SeismicActive : Fragment(), SensorEventListener {
         accelData[2] = event.values[2] - gravity[2]
         // event.timestamp: Long is in nanoseconds; forumla to get timestamp into milliseconds
         val t = System.currentTimeMillis() + (event.timestamp - SystemClock.elapsedRealtimeNanos()) / 1000000
+
+        seismicActiveViewModel.onAccelerometerDataGenerated(accelData, t)
 
         Log.d(TAG, "${event.sensor.name}: ${accelData[0]}, ${accelData[1]}, ${accelData[2]} : ${convertLongToDateString(t)}")
     }

@@ -11,6 +11,8 @@ import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.launch
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class SeismicActiveViewModel(
     private val activeKey: Long = 0L,
@@ -29,8 +31,9 @@ class SeismicActiveViewModel(
     fun gatherDataPoints() {
         val dp = LineGraphSeries<DataPoint>()
         activeSession.value!!.sessionMeasurements.forEach {
-            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.xValue} : ${convertStringDateToDate(it.recorded)}")
-            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.xValue.toDouble()), true, 10)
+            val magnitude = sqrt(it.xValue.pow(2) + it.yValue.pow(2) + it.zValue.pow(2))
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${magnitude} : ${convertStringDateToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), magnitude.toDouble()), true, 20)
         }
         dataPoints.value = dp
     }
@@ -50,6 +53,14 @@ class SeismicActiveViewModel(
         viewModelScope.launch {
             val rn: Float = ThreadLocalRandom.current().nextFloat()
             val newMeasurement = Measurement(sessionID = activeKey, recorded = System.currentTimeMillis(), xValue = rn, yValue = 0f, zValue = 0f)
+            insertMeasurement(newMeasurement)
+        }
+    }
+
+    fun onAccelerometerDataGenerated(data: FloatArray, t: Long) {
+        Log.d(TAG, "Saving accelerometer data")
+        viewModelScope.launch {
+            val newMeasurement = Measurement(sessionID = activeKey, recorded = t, xValue = data[0], yValue = data[1], zValue = data[2])
             insertMeasurement(newMeasurement)
         }
     }
