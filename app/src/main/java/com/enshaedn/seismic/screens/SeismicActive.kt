@@ -22,7 +22,6 @@ import com.enshaedn.seismic.utils.convertLongToDateString
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModel
 import com.enshaedn.seismic.viewModels.SeismicActiveViewModelFactory
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
-import java.util.*
 
 class SeismicActive : Fragment(), SensorEventListener {
     private val TAG = "SEISMIC_LOG"
@@ -112,12 +111,10 @@ class SeismicActive : Fragment(), SensorEventListener {
         accelData[0] = event.values[0] - gravity[0]
         accelData[1] = event.values[1] - gravity[1]
         accelData[2] = event.values[2] - gravity[2]
-        // event.timestamp is a Long, but in nanoseconds
-        val t = event.timestamp
-        val tInMilli = System.currentTimeMillis() + (t - SystemClock.elapsedRealtimeNanos()) / 1000000
+        // event.timestamp: Long is in nanoseconds; forumla to get timestamp into milliseconds
+        val t = System.currentTimeMillis() + (event.timestamp - SystemClock.elapsedRealtimeNanos()) / 1000000
 
-        Log.d(TAG, "${event.sensor.name}: ${accelData[0]}, ${accelData[1]}, ${accelData[2]} : ${t} vs ${SystemClock.elapsedRealtimeNanos()}")
-        Log.d(TAG, "${tInMilli} : ${convertLongToDateString(tInMilli)}")
+        Log.d(TAG, "${event.sensor.name}: ${accelData[0]}, ${accelData[1]}, ${accelData[2]} : ${convertLongToDateString(t)}")
     }
 
     override fun onResume() {
