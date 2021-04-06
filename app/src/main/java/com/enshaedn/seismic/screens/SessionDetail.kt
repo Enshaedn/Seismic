@@ -46,14 +46,15 @@ class SessionDetail : Fragment() {
             if(it != null) {
                 binding.sessionDetailGraph.apply {
                     addSeries(it)
-                    gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
+//                    gridLabelRenderer.labelFormatter = DateAsXAxisLabelFormatter(activity)
 //                    gridLabelRenderer.numHorizontalLabels = 3
-                    viewport.setMinX(it.lowestValueX)
-                    viewport.setMaxX(it.highestValueX)
-                    viewport.isXAxisBoundsManual = true
-                    gridLabelRenderer.setHumanRounding(false)
+//                    viewport.setMinX(it.lowestValueX)
+//                    viewport.setMaxX(it.highestValueX)
+//                    viewport.isXAxisBoundsManual = true
+//                    gridLabelRenderer.setHumanRounding(false)
 //                    viewport.setScalableY(true)
                     viewport.isScalable = true
+                    viewport.isScrollable = true
                 }
             }
         })

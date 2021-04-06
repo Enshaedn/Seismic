@@ -6,7 +6,7 @@ import com.enshaedn.seismic.database.Measurement
 import com.enshaedn.seismic.database.SeismicDao
 import com.enshaedn.seismic.database.Session
 import com.enshaedn.seismic.database.SessionMeasurements
-import com.enshaedn.seismic.utils.convertStringDateToDate
+import com.enshaedn.seismic.utils.convertLongToDate
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.coroutines.launch
@@ -32,8 +32,8 @@ class SeismicActiveViewModel(
         val dp = LineGraphSeries<DataPoint>()
         activeSession.value!!.sessionMeasurements.forEach {
             val magnitude = sqrt(it.xValue.pow(2) + it.yValue.pow(2) + it.zValue.pow(2))
-            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${magnitude} : ${convertStringDateToDate(it.recorded)}")
-            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), magnitude.toDouble()), true, 20)
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${magnitude} : ${convertLongToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertLongToDate(it.recorded), magnitude.toDouble()), true, 20)
         }
         dataPoints.value = dp
     }

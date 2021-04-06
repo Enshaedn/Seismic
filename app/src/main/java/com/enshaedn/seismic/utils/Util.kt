@@ -17,7 +17,7 @@ fun convertLongToDateOnlyString(systemTime: Long): String {
 }
 
 @Suppress("SimpleDateFormat")
-fun convertStringDateToDate(systemTime: Long): Date {
+fun convertLongToDate(systemTime: Long): Date {
     val date = convertLongToDateString(systemTime)
     return SimpleDateFormat("EEEE MMM-dd-yyyy' Time: 'HH:mm:ss:SSS").parse(date)!!
 }
