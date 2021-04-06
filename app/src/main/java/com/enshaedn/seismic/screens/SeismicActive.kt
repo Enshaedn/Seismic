@@ -68,7 +68,7 @@ class SeismicActive : Fragment(), SensorEventListener {
             it?.let {
                 seismicActiveViewModel.gatherDataPoints()
                 it.sessionMeasurements.forEach {
-                    Log.d(TAG, "${it.measurementID} : ${it.measurement}")
+                    Log.d(TAG, "${it.measurementID} : ${it.xValue}")
                 }
             }
         })
@@ -101,7 +101,7 @@ class SeismicActive : Fragment(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        val alpha: Float = 0.8f
+        val alpha = 0.8f
 
         //isolate gravity with low pass filter
         gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0]

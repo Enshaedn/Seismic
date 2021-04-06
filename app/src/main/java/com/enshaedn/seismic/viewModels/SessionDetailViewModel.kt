@@ -24,8 +24,8 @@ class SessionDetailViewModel(private val sessionKey: Long = 0L, dataSource: Seis
     fun gatherDataPoints() {
         val dp = LineGraphSeries<DataPoint>()
         session.value!!.sessionMeasurements.forEach {
-            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement} : ${convertStringDateToDate(it.recorded)}")
-            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.measurement.toDouble()), true, 10)
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.xValue} : ${convertStringDateToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.xValue.toDouble()), true, 10)
         }
         dataPoints.value = dp
     }

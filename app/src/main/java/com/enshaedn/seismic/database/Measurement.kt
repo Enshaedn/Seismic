@@ -16,11 +16,16 @@ data class Measurement(
     val sessionID: Long,
 
     @ColumnInfo(name = "timestamp_recorded")
-//    val recordedTimeStamp: Timestamp,
-    val recorded: Long = System.currentTimeMillis(),
+    val recorded: Long,
 
-    @ColumnInfo(name = "measurement")
-    val measurement: Float
+    @ColumnInfo(name = "x_value")
+    val xValue: Float,
+
+    @ColumnInfo(name = "y_value")
+    val yValue: Float,
+
+    @ColumnInfo(name = "z_value")
+    val zValue: Float
 )
 
 data class SessionMeasurements(

@@ -29,8 +29,8 @@ class SeismicActiveViewModel(
     fun gatherDataPoints() {
         val dp = LineGraphSeries<DataPoint>()
         activeSession.value!!.sessionMeasurements.forEach {
-            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.measurement} : ${convertStringDateToDate(it.recorded)}")
-            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.measurement.toDouble()), true, 10)
+            Log.d(TAG, "${it.sessionID} : ${it.measurementID} : ${it.xValue} : ${convertStringDateToDate(it.recorded)}")
+            dp.appendData(DataPoint(convertStringDateToDate(it.recorded), it.xValue.toDouble()), true, 10)
         }
         dataPoints.value = dp
     }
@@ -49,7 +49,7 @@ class SeismicActiveViewModel(
         Log.d(TAG, "Generating a random number")
         viewModelScope.launch {
             val rn: Float = ThreadLocalRandom.current().nextFloat()
-            val newMeasurement = Measurement(sessionID = activeKey, measurement = rn)
+            val newMeasurement = Measurement(sessionID = activeKey, recorded = System.currentTimeMillis(), xValue = rn, yValue = 0f, zValue = 0f)
             insertMeasurement(newMeasurement)
         }
     }
