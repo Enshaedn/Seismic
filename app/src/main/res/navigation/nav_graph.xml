@@ -12,10 +12,14 @@
         tools:layout="@layout/fragment_seismic_home" >
         <action
             android:id="@+id/action_seismicHome_to_sessionsList"
-            app:destination="@id/sessionsList" />
+            app:destination="@id/sessionsList"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_seismicHome_to_seismicActive"
-            app:destination="@id/seismicActive" />
+            app:destination="@id/seismicActive"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -39,7 +43,9 @@
         android:label="@string/sessionsListScreen" >
         <action
             android:id="@+id/action_sessionsList_to_sessionDetail"
-            app:destination="@id/sessionDetail" />
+            app:destination="@id/sessionDetail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -51,7 +57,9 @@
             app:argType="long" />
         <action
             android:id="@+id/action_sessionDetail_to_sessionsList"
-            app:destination="@id/sessionsList" />
+            app:destination="@id/sessionsList"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -64,6 +72,8 @@
             app:argType="long" />
         <action
             android:id="@+id/action_seismicActive_to_seismicFinalize"
-            app:destination="@id/seismicFinalize" />
+            app:destination="@id/seismicFinalize"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>
