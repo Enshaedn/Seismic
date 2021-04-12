@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Seismic</string>
+    <!-- Screen Titles -->
+    <string name="activeSessionScreen">Active Session</string>
+    <string name="saveSessionScreen">Save Session</string>
+    <string name="sessionsListScreen">All Sessions</string>
+    <string name="currentSessionScreen">Current Session</string>
 
     <!-- Button Text -->
     <string name="startSession">Start Session</string>

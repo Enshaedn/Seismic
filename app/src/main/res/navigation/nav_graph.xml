@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/seismicHome"
         android:name="com.enshaedn.seismic.screens.SeismicHome"
-        android:label="fragment_seismic_home"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_seismic_home" >
         <action
             android:id="@+id/action_seismicHome_to_sessionsList"
@@ -21,20 +21,22 @@
     <fragment
         android:id="@+id/seismicFinalize"
         android:name="com.enshaedn.seismic.screens.SeismicFinalize"
-        android:label="fragment_seismic"
+        android:label="@string/saveSessionScreen"
         tools:layout="@layout/fragment_seismic_finalize" >
         <argument
             android:name="sessionKey"
             app:argType="long" />
         <action
             android:id="@+id/action_seismicFinalize_to_seismicHome"
-            app:destination="@id/seismicHome" />
+            app:destination="@id/seismicHome"
+            app:popUpTo="@id/seismicHome"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/sessionsList"
         android:name="com.enshaedn.seismic.screens.SessionsList"
-        android:label="SessionsList" >
+        android:label="@string/sessionsListScreen" >
         <action
             android:id="@+id/action_sessionsList_to_sessionDetail"
             app:destination="@id/sessionDetail" />
@@ -43,7 +45,7 @@
     <fragment
         android:id="@+id/sessionDetail"
         android:name="com.enshaedn.seismic.screens.SessionDetail"
-        android:label="SessionDetail" >
+        android:label="@string/currentSessionScreen" >
         <argument
             android:name="sessionKey"
             app:argType="long" />
@@ -55,7 +57,7 @@
     <fragment
         android:id="@+id/seismicActive"
         android:name="com.enshaedn.seismic.screens.SeismicActive"
-        android:label="fragment_seismic_active"
+        android:label="@string/activeSessionScreen"
         tools:layout="@layout/fragment_seismic_active" >
         <argument
             android:name="sessionKey"
